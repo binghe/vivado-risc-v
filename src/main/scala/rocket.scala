@@ -163,7 +163,7 @@ class Rocket64b2m2 extends Config(
   new WithNBigCores(2)    ++
   new WithExtMemSize(0x3f80000000L) ++
   new WithNMemoryChannels(2) ++
-  new WithNBanks(4) ++ 
+  new WithNBanks(4) ++
   new WithInclusiveCache ++
   new RocketWideBusConfig)
 
@@ -173,7 +173,7 @@ class Rocket64b4m4 extends Config(
   new WithNBigCores(4)    ++
   new WithExtMemSize(0x3f80000000L) ++
   new WithNMemoryChannels(4) ++
-  new WithNBanks(8) ++ 
+  new WithNBanks(8) ++
   new WithInclusiveCache ++
   new RocketWideBusConfig)
 
@@ -291,6 +291,27 @@ class Rocket64b4l2w extends Config(
   new WithNBigCores(4)    ++
   new RocketWideBusConfig)
 
+/* For Genesys2 */
+class Rocket64b5l2w extends Config(
+  new WithInclusiveCache  ++
+  new WithNBreakpoints(8) ++
+  new WithNBigCores(5)    ++
+  new RocketWideBusConfig)
+
+/* For U200 */
+class Rocket64b24l2w extends Config(
+  new WithInclusiveCache  ++
+  new WithNBreakpoints(8) ++
+  new WithNBigCores(24)   ++
+  new RocketWideBusConfig)
+
+/* For U200 */
+class Rocket64b32l2w extends Config(
+  new WithInclusiveCache  ++
+  new WithNBreakpoints(8) ++
+  new WithNBigCores(32)   ++
+  new RocketWideBusConfig)
+
 class Rocket64b8 extends Config(
   new WithNBreakpoints(8) ++
   new WithNBigCores(8)    ++
@@ -371,7 +392,7 @@ class Rocket64x12m4 extends Config(
   new boom.common.WithNMediumBooms(12) ++
   new WithExtMemSize(0x3f80000000L) ++
   new WithNMemoryChannels(4) ++
-  new WithNBanks(8) ++ 
+  new WithNBanks(8) ++
   new WithInclusiveCache ++
   new RocketWideBusConfig)
 

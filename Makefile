@@ -4,8 +4,8 @@ ifneq (,$(wildcard workspace/config))
 include workspace/config
 endif
 
-BOARD ?= nexys-video
-CONFIG ?= rocket64b2
+BOARD ?= genesys2
+CONFIG ?= rocket64b5l2w
 HW_SERVER_ADDR ?= localhost:3121
 JAVA_OPTIONS ?=
 CFG_FORMAT ?= mcs
@@ -77,7 +77,7 @@ clean-sbt:
 clean:
 	rm -rf workspace/patch-*-done
 	git submodule foreach --recursive git clean -xfdq
-	sudo rm -rf debian-riscv64 target project/target project/project/target generators/targetutils/target vhdl-wrapper/bin
+	rm -rf debian-riscv64 target project/target project/project/target generators/targetutils/target vhdl-wrapper/bin
 
 # --- download gcc, initrd and rootfs from github.com ---
 
@@ -128,8 +128,9 @@ linux-stable/arch/riscv/boot/Image: workspace/patch-linux-done
 
 # --- build U-Boot ---
 
+# NOTE: This value is override by board-specific Makefile.inc (NFS for u200)
 ROOTFS ?= SD
-ROOTFS_URL ?= 192.168.0.100:/home/nfsroot/192.168.0.243
+ROOTFS_URL ?= 192.168.1.100:/rpool/nfsroot
 
 .PHONY: u-boot
 u-boot: u-boot/u-boot-nodtb.bin
@@ -187,7 +188,7 @@ opensbi/build/platform/vivado-risc-v/firmware/fw_payload.elf: $(wildcard patches
 
 opensbi-qemu:
 	cd qemu && if [ ! -d opensbi ]; then git clone ../opensbi; fi
-	cd qemu && $(MAKE) -C opensbi clean && $(MAKE) -C opensbi PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE_LINUX) FW_PAYLOAD_PATH=../u-boot/u-boot.bin
+	cd qemu && $(MAKE) -C opensbi clean && $(MAKE) -C opensbi PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE_LINUX) FW_PAYLOAD_PATH=/opt/risc-v/u-boot/u-boot-nodtb.bin
 
 # --- generate HDL ---
 
@@ -199,6 +200,7 @@ ROCKET_FREQ_MHZ ?= $(shell awk '$$3 != "" && "$(BOARD)" ~ $$1 && "$(CONFIG_SCALA
 ROCKET_CLOCK_FREQ := $(shell echo - | awk '{printf("%.0f\n", $(ROCKET_FREQ_MHZ) * 1000000)}')
 ROCKET_TIMEBASE_FREQ := $(shell echo - | awk '{printf("%.0f\n", $(ROCKET_FREQ_MHZ) * 10000)}')
 
+# NOTE: This value is override by board-specific Makefile.inc
 MEMORY_SIZE ?= 0x40000000
 
 ifneq ($(findstring Rocket32t,$(CONFIG_SCALA)),)
@@ -329,6 +331,8 @@ workspace/$(CONFIG)/system-$(BOARD).tcl: workspace/$(CONFIG)/rocket.vhdl workspa
 	echo "set memory_size $(MEMORY_SIZE)" >>$@
 	echo 'cd [file dirname [file normalize [info script]]]' >>$@
 	echo 'source ../../vivado.tcl' >>$@
+	echo 'set_property strategy Flow_PerfOptimized_high [get_runs synth_1]' >>$@
+	echo 'set_property strategy Performance_ExtraTimingOpt [get_runs impl_1]' >>$@
 
 vivado-tcl: workspace/$(CONFIG)/system-$(BOARD).tcl
 
@@ -341,7 +345,7 @@ vivado-project: $(proj_time)
 # --- generate FPGA bitstream ---
 
 # Multi-threading appears broken in Vivado. It causes intermittent failures.
-MAX_THREADS ?= 1
+MAX_THREADS ?= 6
 
 $(synthesis): $(proj_time)
 	echo "set_param general.maxThreads $(MAX_THREADS)" >>$(proj_path)/make-synthesis.tcl
