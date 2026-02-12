@@ -177,6 +177,24 @@ class Rocket64b4m4 extends Config(
   new WithInclusiveCache ++
   new RocketWideBusConfig)
 
+class Rocket64b8m4 extends Config(
+  new WithNBreakpoints(8) ++
+  new WithNBigCores(8)    ++
+  new WithExtMemSize(0x3f80000000L) ++
+  new WithNMemoryChannels(4) ++
+  new WithNBanks(8) ++
+  new WithInclusiveCache ++
+  new RocketWideBusConfig)
+
+class Rocket64b24m4 extends Config(
+  new WithNBreakpoints(8) ++
+  new WithNBigCores(24)    ++
+  new WithExtMemSize(0x3f80000000L) ++
+  new WithNMemoryChannels(4) ++
+  new WithNBanks(8) ++
+  new WithInclusiveCache ++
+  new RocketWideBusConfig)
+
 /* With exposed JTAG port */
 class Rocket64b2j extends Config(
   new WithNBreakpoints(8) ++
