@@ -403,7 +403,9 @@ else
 	echo "JTAG boot requires either ROOTFS=NFS or JTAG_BOOT=1" && exit 1
 endif
 
-jtag-boot: $(bitstream) linux-stable/arch/riscv/boot/Image debian-riscv64/ramdisk workspace/boot.elf
+# NOTE: putting $(bitstream) into dependencies usually causes it being rebuilt
+# due to occasionally changes to some files.
+jtag-boot: linux-stable/arch/riscv/boot/Image debian-riscv64/ramdisk workspace/boot.elf
 	env HW_SERVER_URL=tcp:$(HW_SERVER_ADDR) \
 	 xsdb -quiet board/jtag-freq.tcl
 	env BITSTREAM=$(bitstream) \

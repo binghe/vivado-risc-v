@@ -134,12 +134,12 @@ if { $bCheckIPs == 1 } {
 xilinx.com:ip:clk_wiz:6.0\
 xilinx.com:ip:ddr4:2.2\
 xilinx.com:ip:smartconnect:1.0\
-xilinx.com:ip:util_reduced_logic:2.0\
 xilinx.com:ip:axi_iic:2.1\
 xilinx.com:ip:qdma:5.1\
 xilinx.com:ip:util_ds_buf:2.2\
 xilinx.com:inline_hdl:ilconcat:1.0\
 xilinx.com:inline_hdl:ilconstant:1.0\
+xilinx.com:inline_hdl:ilreduced_logic:1.0\
 xilinx.com:inline_hdl:ilvector_logic:1.0\
 "
 
@@ -311,10 +311,8 @@ proc create_hier_cell_IO { parentCell nameHier } {
    CONFIG.cfg_mgmt_if {false} \
    CONFIG.coreclk_freq {250} \
    CONFIG.dma_intf_sel_qdma {AXI_MM} \
-   CONFIG.dsc_byp_mode {Descriptor_bypass_and_internal} \
-   CONFIG.en_axi_st_qdma {false} \
    CONFIG.en_gt_selection {true} \
-   CONFIG.mode_selection {Advanced} \
+   CONFIG.mode_selection {Basic} \
    CONFIG.pf0_bar2_scale_qdma {Megabytes} \
    CONFIG.pf0_device_id {9028} \
    CONFIG.pf0_msix_enabled_qdma {false} \
@@ -578,7 +576,7 @@ proc create_hier_cell_DDR { parentCell nameHier } {
  ] $util_vector_logic_3
 
   # Create instance: util_reduced_logic_0, and set properties
-  set util_reduced_logic_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_reduced_logic:2.0 util_reduced_logic_0 ]
+  set util_reduced_logic_0 [ create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilreduced_logic:1.0 util_reduced_logic_0 ]
   set_property -dict [ list \
    CONFIG.C_OPERATION {and} \
    CONFIG.C_SIZE {4} \

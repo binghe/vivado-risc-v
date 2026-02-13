@@ -311,10 +311,8 @@ proc create_hier_cell_IO { parentCell nameHier } {
    CONFIG.cfg_mgmt_if {false} \
    CONFIG.coreclk_freq {250} \
    CONFIG.dma_intf_sel_qdma {AXI_MM} \
-   CONFIG.dsc_byp_mode {Descriptor_bypass_and_internal} \
-   CONFIG.en_axi_st_qdma {false} \
    CONFIG.en_gt_selection {true} \
-   CONFIG.mode_selection {Advanced} \
+   CONFIG.mode_selection {Basic} \
    CONFIG.pf0_bar2_scale_qdma {Megabytes} \
    CONFIG.pf0_device_id {9028} \
    CONFIG.pf0_msix_enabled_qdma {false} \
