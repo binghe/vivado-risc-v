@@ -167,6 +167,33 @@ class Rocket64b2m2 extends Config(
   new WithInclusiveCache ++
   new RocketWideBusConfig)
 
+class Rocket64b8m2 extends Config(
+  new WithNBreakpoints(8) ++
+  new WithNBigCores(8)    ++
+  new WithExtMemSize(0x3f80000000L) ++
+  new WithNMemoryChannels(2) ++
+  new WithNBanks(4) ++
+  new WithInclusiveCache ++
+  new RocketWideBusConfig)
+
+class Rocket64b16m2 extends Config(
+  new WithNBreakpoints(8) ++
+  new WithNBigCores(16)    ++
+  new WithExtMemSize(0x3f80000000L) ++
+  new WithNMemoryChannels(2) ++
+  new WithNBanks(4) ++
+  new WithInclusiveCache ++
+  new RocketWideBusConfig)
+
+class Rocket64b24m2 extends Config(
+  new WithNBreakpoints(8) ++
+  new WithNBigCores(24)    ++
+  new WithExtMemSize(0x3f80000000L) ++
+  new WithNMemoryChannels(2) ++
+  new WithNBanks(4) ++
+  new WithInclusiveCache ++
+  new RocketWideBusConfig)
+
 /* With up to 256GB memory, 4 memory channels, L2 cache and wide memory bus */
 class Rocket64b4m4 extends Config(
   new WithNBreakpoints(8) ++
@@ -186,9 +213,9 @@ class Rocket64b8m4 extends Config(
   new WithInclusiveCache ++
   new RocketWideBusConfig)
 
-class Rocket64b24m4 extends Config(
+class Rocket64b16m4 extends Config(
   new WithNBreakpoints(8) ++
-  new WithNBigCores(24)    ++
+  new WithNBigCores(16)    ++
   new WithExtMemSize(0x3f80000000L) ++
   new WithNMemoryChannels(4) ++
   new WithNBanks(8) ++
