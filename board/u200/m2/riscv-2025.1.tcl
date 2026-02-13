@@ -135,7 +135,6 @@ xilinx.com:ip:clk_wiz:6.0\
 xilinx.com:ip:ddr4:2.2\
 xilinx.com:ip:smartconnect:1.0\
 xilinx.com:ip:axi_iic:2.1\
-xilinx.com:ip:axi_interconnect:2.1\
 xilinx.com:ip:qdma:5.1\
 xilinx.com:ip:util_ds_buf:2.2\
 xilinx.com:inline_hdl:ilconcat:1.0\
@@ -472,16 +471,11 @@ proc create_hier_cell_DDR { parentCell nameHier } {
   create_bd_pin -dir I -type rst sys_reset
 
   # Create instance: axi_interconnect_0, and set properties
-  set axi_interconnect_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_interconnect_0 ]
+  set axi_interconnect_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 axi_interconnect_0 ]
   set_property -dict [ list \
-   CONFIG.ENABLE_ADVANCED_OPTIONS {0} \
+   CONFIG.NUM_CLKS {3} \
    CONFIG.NUM_MI {2} \
    CONFIG.NUM_SI {2} \
-   CONFIG.S00_HAS_DATA_FIFO {2} \
-   CONFIG.S01_HAS_DATA_FIFO {2} \
-   CONFIG.M00_HAS_REGSLICE {4} \
-   CONFIG.M01_HAS_REGSLICE {4} \
-   CONFIG.STRATEGY {2} \
  ] $axi_interconnect_0
 
   # Create instance: ddr4_0, and set properties
@@ -551,17 +545,17 @@ proc create_hier_cell_DDR { parentCell nameHier } {
   connect_bd_intf_net -intf_net smartconnect_0_M01_AXI [get_bd_intf_pins ddr4_1/C0_DDR4_S_AXI_CTRL] [get_bd_intf_pins smartconnect_0/M01_AXI]
 
   # Create port connections
-  connect_bd_net -net RocketChip_aresetn [get_bd_pins axi_reset] [get_bd_pins axi_interconnect_0/ARESETN] [get_bd_pins axi_interconnect_0/S00_ARESETN] [get_bd_pins axi_interconnect_0/S01_ARESETN] [get_bd_pins axi_interconnect_0/S02_ARESETN] [get_bd_pins axi_interconnect_0/S03_ARESETN] [get_bd_pins smartconnect_0/aresetn]
-  connect_bd_net -net axi_clock [get_bd_pins axi_clock] [get_bd_pins axi_interconnect_0/ACLK] [get_bd_pins axi_interconnect_0/S00_ACLK] [get_bd_pins axi_interconnect_0/S01_ACLK] [get_bd_pins axi_interconnect_0/S02_ACLK] [get_bd_pins axi_interconnect_0/S03_ACLK] [get_bd_pins smartconnect_0/aclk]
-  connect_bd_net -net ddr4_0_c0_ddr4_ui_clk [get_bd_pins ddr4_0/c0_ddr4_ui_clk] [get_bd_pins smartconnect_0/aclk1] [get_bd_pins axi_interconnect_0/M00_ACLK]
+  connect_bd_net -net RocketChip_aresetn [get_bd_pins axi_reset] [get_bd_pins axi_interconnect_0/aresetn] [get_bd_pins smartconnect_0/aresetn]
+  connect_bd_net -net axi_clock [get_bd_pins axi_clock] [get_bd_pins axi_interconnect_0/aclk] [get_bd_pins smartconnect_0/aclk]
+  connect_bd_net -net ddr4_0_c0_ddr4_ui_clk [get_bd_pins ddr4_0/c0_ddr4_ui_clk] [get_bd_pins smartconnect_0/aclk1] [get_bd_pins axi_interconnect_0/aclk1]
   connect_bd_net -net ddr4_0_c0_ddr4_ui_clk_sync_rst [get_bd_pins ddr4_0/c0_ddr4_ui_clk_sync_rst] [get_bd_pins util_vector_logic_0/Op1]
   connect_bd_net -net ddr4_0_c0_init_calib_complete [get_bd_pins ddr4_0/c0_init_calib_complete] [get_bd_pins xlconcat_0/In0]
-  connect_bd_net -net ddr4_1_c0_ddr4_ui_clk [get_bd_pins ddr4_1/c0_ddr4_ui_clk] [get_bd_pins smartconnect_0/aclk2] [get_bd_pins axi_interconnect_0/M01_ACLK]
+  connect_bd_net -net ddr4_1_c0_ddr4_ui_clk [get_bd_pins ddr4_1/c0_ddr4_ui_clk] [get_bd_pins smartconnect_0/aclk2] [get_bd_pins axi_interconnect_0/aclk2]
   connect_bd_net -net ddr4_1_c0_ddr4_ui_clk_sync_rst [get_bd_pins ddr4_1/c0_ddr4_ui_clk_sync_rst] [get_bd_pins util_vector_logic_1/Op1]
   connect_bd_net -net ddr4_1_c0_init_calib_complete [get_bd_pins ddr4_1/c0_init_calib_complete] [get_bd_pins xlconcat_0/In1]
   connect_bd_net -net resetn_inv_0_Res [get_bd_pins sys_reset] [get_bd_pins ddr4_0/sys_rst] [get_bd_pins ddr4_1/sys_rst]
-  connect_bd_net -net c0_ddr4_0_aresetn [get_bd_pins ddr4_0/c0_ddr4_aresetn] [get_bd_pins util_vector_logic_0/Res] [get_bd_pins axi_interconnect_0/M00_ARESETN]
-  connect_bd_net -net c0_ddr4_1_aresetn [get_bd_pins ddr4_1/c0_ddr4_aresetn] [get_bd_pins util_vector_logic_1/Res] [get_bd_pins axi_interconnect_0/M01_ARESETN]
+  connect_bd_net -net c0_ddr4_0_aresetn [get_bd_pins ddr4_0/c0_ddr4_aresetn] [get_bd_pins util_vector_logic_0/Res]
+  connect_bd_net -net c0_ddr4_1_aresetn [get_bd_pins ddr4_1/c0_ddr4_aresetn] [get_bd_pins util_vector_logic_1/Res]
   connect_bd_net -net util_reduced_logic_0_Res [get_bd_pins init_calib_complete] [get_bd_pins util_reduced_logic_0/Res]
   connect_bd_net -net xlconcat_0_dout [get_bd_pins util_reduced_logic_0/Op1] [get_bd_pins xlconcat_0/dout]
 
