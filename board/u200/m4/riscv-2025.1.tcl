@@ -135,6 +135,7 @@ xilinx.com:ip:clk_wiz:6.0\
 xilinx.com:ip:ddr4:2.2\
 xilinx.com:ip:smartconnect:1.0\
 xilinx.com:ip:axi_iic:2.1\
+xilinx.com:ip:axi_interconnect:2.1\
 xilinx.com:ip:qdma:5.1\
 xilinx.com:ip:util_ds_buf:2.2\
 xilinx.com:inline_hdl:ilconcat:1.0\

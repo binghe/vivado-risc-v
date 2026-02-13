@@ -19,7 +19,7 @@ vc707         Rocket.*          100.0
 (vcu1525|u200|u250)          Rocket.*m4            100.0
 (vcu1525|u200|u250)          Rocket.*b[2-9][0-9].* 125.0
 (vcu1525|u200|u250)          Rocket.*b1[0-9].*     80.0
-(vcu1525|u200|u250)          Rocket.*m2            80.0
+(vcu1525|u200|u250)          Rocket.*m2            100.0
 (vcu1525|u200|u250)          Rocket.*              125.0
 
 (x3522pv)          Rocket32s1            250.0

@@ -135,6 +135,7 @@ xilinx.com:ip:clk_wiz:6.0\
 xilinx.com:ip:ddr4:2.2\
 xilinx.com:ip:smartconnect:1.0\
 xilinx.com:ip:axi_iic:2.1\
+xilinx.com:ip:axi_interconnect:2.1\
 xilinx.com:ip:qdma:5.1\
 xilinx.com:ip:util_ds_buf:2.2\
 xilinx.com:inline_hdl:ilconcat:1.0\
@@ -167,8 +168,8 @@ set bCheckModules 1
 if { $bCheckModules == 1 } {
    set list_check_mods "\
 $rocket_module_name\
-uart\
 ethernet\
+uart\
 "
 
    set list_mods_missing ""
@@ -470,6 +471,19 @@ proc create_hier_cell_DDR { parentCell nameHier } {
   create_bd_pin -dir O init_calib_complete
   create_bd_pin -dir I -type rst sys_reset
 
+  # Create instance: axi_interconnect_0, and set properties
+  set axi_interconnect_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_interconnect_0 ]
+  set_property -dict [ list \
+   CONFIG.ENABLE_ADVANCED_OPTIONS {0} \
+   CONFIG.NUM_MI {2} \
+   CONFIG.NUM_SI {2} \
+   CONFIG.S00_HAS_DATA_FIFO {2} \
+   CONFIG.S01_HAS_DATA_FIFO {2} \
+   CONFIG.M00_HAS_REGSLICE {4} \
+   CONFIG.M01_HAS_REGSLICE {4} \
+   CONFIG.STRATEGY {2} \
+ ] $axi_interconnect_0
+
   # Create instance: ddr4_0, and set properties
   set ddr4_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:ddr4:2.2 ddr4_0 ]
   set_property -dict [ list \
@@ -495,18 +509,6 @@ proc create_hier_cell_DDR { parentCell nameHier } {
    CONFIG.NUM_MI {2} \
    CONFIG.NUM_SI {1} \
  ] $smartconnect_0
-
-  # Create instance: axi_interconnect_0, and set properties
-  set axi_interconnect_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_interconnect_0 ]
-  set_property -dict [ list \
-   CONFIG.NUM_MI {2} \
-   CONFIG.NUM_SI {2} \
-   CONFIG.S00_HAS_DATA_FIFO {2} \
-   CONFIG.S01_HAS_DATA_FIFO {2} \
-   CONFIG.M00_HAS_REGSLICE {4} \
-   CONFIG.M01_HAS_REGSLICE {4} \
-   CONFIG.STRATEGY {2} \
- ] $axi_interconnect_0
 
   # Create instance: util_vector_logic_0, and set properties
   set util_vector_logic_0 [ create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilvector_logic:1.0 util_vector_logic_0 ]
