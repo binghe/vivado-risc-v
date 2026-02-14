@@ -352,14 +352,18 @@ class Rocket64b5l2w extends Config(
   new WithNBigCores(5)    ++
   new RocketWideBusConfig)
 
-/* For U200 */
+class Rocket64b16l2w extends Config(
+  new WithInclusiveCache  ++
+  new WithNBreakpoints(8) ++
+  new WithNBigCores(16)   ++
+  new RocketWideBusConfig)
+
 class Rocket64b24l2w extends Config(
   new WithInclusiveCache  ++
   new WithNBreakpoints(8) ++
   new WithNBigCores(24)   ++
   new RocketWideBusConfig)
 
-/* For U200 */
 class Rocket64b32l2w extends Config(
   new WithInclusiveCache  ++
   new WithNBreakpoints(8) ++
