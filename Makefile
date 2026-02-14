@@ -412,6 +412,12 @@ jtag-boot: linux-stable/arch/riscv/boot/Image debian-riscv64/ramdisk workspace/b
 	env HW_SERVER_URL=tcp:$(HW_SERVER_ADDR) \
 	 xsdb -quiet board/jtag-boot.tcl
 
+jtag-reboot: linux-stable/arch/riscv/boot/Image debian-riscv64/ramdisk workspace/boot.elf
+	env HW_SERVER_URL=tcp:$(HW_SERVER_ADDR) \
+	 xsdb -quiet board/jtag-freq.tcl
+	env HW_SERVER_URL=tcp:$(HW_SERVER_ADDR) \
+	 xsdb -quiet board/jtag-reboot.tcl
+
 # --- launch Vivado GUI ---
 
 vivado-gui: $(proj_time)
