@@ -121,6 +121,9 @@ workspace/patch-linux-done: patches/linux.patch patches/fpga-axi-sdc.c patches/f
 	cp -p patches/linux.config linux-stable/.config
 	mkdir -p workspace && touch workspace/patch-linux-done
 
+linux-config: workspace/patch-linux-done
+	$(MAKE) -C linux-stable ARCH=riscv CROSS_COMPILE=$(CROSS_COMPILE_LINUX) menuconfig
+
 linux-stable/arch/riscv/boot/Image: workspace/patch-linux-done
 	$(MAKE) -C linux-stable ARCH=riscv CROSS_COMPILE=$(CROSS_COMPILE_LINUX) oldconfig
 	$(MAKE) -C linux-stable ARCH=riscv CROSS_COMPILE=$(CROSS_COMPILE_LINUX) all
